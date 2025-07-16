@@ -31,14 +31,14 @@ export function getParam(param) {
   return product
 }
 
-export function renderListWithTemplate(template, parentElement, list, position = "afterbegin", clear = false) {
-  // if clear is true we need to clear out the contents of the parent.
-  if (clear) {
-    parentElement.innerHTML = "";
-  }
-  const htmlStrings = list.map(templateFn).join("");
-  parentElement.insertAdjacentHTML(position, htmlStrings.join(""));
-}
+// export function renderListWithTemplate(template, parentElement, list, position = "afterbegin", clear = false) {
+//   // if clear is true we need to clear out the contents of the parent.
+//   if (clear) {
+//     parentElement.innerHTML = "";
+//   }
+//   const htmlStrings = list.map(templateFn).join("");
+//   parentElement.insertAdjacentHTML(position, htmlStrings.join(""));
+// }
 
 /**
  * Renders a list of items into the DOM using a provided template function.
