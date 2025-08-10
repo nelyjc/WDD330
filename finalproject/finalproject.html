@@ -47,19 +47,24 @@
   <main>
     <div class="hero">
       <img src="images/patriot-park.jpg" width="600" height="400" alt="Hero" loading="lazy">
-
     </div>
+
     <section class="weather-box">
     <h2>Current Weather in Utah County</h2>
     <p id="temp"></p>
     <p id="description"></p>
     <img id="weather-icon" alt="Weather icon">
     </section>
-
+    <div class="view-toggle-buttons">
+      <button id="gridView" class="active">Grid View</button>
+      <button id="listView">List View</button>
+    </div>
+    
     <section class="featured-playground">
       <h1>Featured Playgrounds</h1>
       <p>These are the best playgrounds that we are featuring this week.</p>
     </section>
+    
     <section class="playground-cards" id="playground-container"></section>
     </div>
 
@@ -77,6 +82,7 @@
 
     <button type="submit">Submit</button>
     </form>
+    
 
   </main>
 
