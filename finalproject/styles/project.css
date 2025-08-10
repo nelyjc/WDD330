@@ -284,3 +284,76 @@ form button {
   text-align: center;
 }
 
+/* === Animations === */
+/* === Animations === */
+
+/* Fade-in animation */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Scale-up animation */
+@keyframes scaleUp {
+  from { transform: scale(0.95); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+/* Slide-down animation */
+@keyframes slideDown {
+  from { transform: translateY(-20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* === Apply Animations === */
+
+/* Header appears smoothly */
+header {
+  animation: slideDown 0.6s ease-out;
+}
+
+/* Nav links hover effect */
+nav a {
+  transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+}
+nav a:hover {
+  transform: translateY(-4px);
+  background-color: #eb9c09;
+  color: #000;
+}
+
+/* Playground cards fade in */
+.playground-card {
+  animation: fadeIn 0.8s ease forwards;
+  opacity: 0; /* Start hidden */
+}
+.playground-cards {
+  animation-delay: 0.2s;
+}
+
+/* Playground card hover zoom */
+.playground-card:hover {
+  transform: scale(1.02);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Images fade in */
+img {
+  animation: fadeIn 1s ease-out;
+}
+
+/* Weather box scale-in */
+.weather-box {
+  animation: scaleUp 0.5s ease;
+}
+
+/* Form smooth appearance */
+form {
+  animation: fadeIn 0.7s ease;
+}
+
+/* Footer fade in */
+footer {
+  animation: fadeIn 0.6s ease;
+}
