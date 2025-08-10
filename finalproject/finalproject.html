@@ -21,10 +21,13 @@
 
   <script src="scripts/getdates.js" defer></script>
   <script src="scripts/darkmode.js" defer></script>
+  <script src="scripts/grid-listview.js" defer></script>
 
-  
+  <script src="scripts/foursquare.js" defer></script>
+
   <script src="scripts/formsubmit.js"defer></script>
   <script src="scripts/displayinfo.js" defer></script>
+  
   
 </head>
 
@@ -55,6 +58,7 @@
     <p id="description"></p>
     <img id="weather-icon" alt="Weather icon">
     </section>
+
     <div class="view-toggle-buttons">
       <button id="gridView" class="active">Grid View</button>
       <button id="listView">List View</button>
@@ -67,6 +71,12 @@
     
     <section class="playground-cards" id="playground-container"></section>
     </div>
+
+    <section id="playgrounds-foursquare">
+      <h2>Nearby Covered or Water Playgrounds</h2>
+      <ul id="results"></ul>
+    </section>
+
 
 <!-- ___________Bottom______________________ -->
  
@@ -82,7 +92,7 @@
 
     <button type="submit">Submit</button>
     </form>
-    
+
 
   </main>
 
