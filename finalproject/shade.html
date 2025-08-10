@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shaded Playgrounds</title>
+  <meta name="author" content="Nely Crespin">
+  <meta name="description" content="Shaded Playgrounds">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@600&family=Open+Sans&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles/project.css">
+  <link rel="stylesheet" href="styles/project-larger.css">
+
+  <link rel="icon" href="logoplayground.ico">
+
+  <script src="scripts/playgrounds.js" defer></script>
+  <script src="scripts/getdates.js" defer></script>
+  <script src="scripts/darkmode.js" defer></script>
+
+  <script src="scripts/formsubmit.js"defer></script>
+  <script src="scripts/displayinfo.js" defer></script>
+
+  <script src="scripts/weather.js" defer></script>
+  
+  
+</head>
+
+<body>
+  <header>
+    <div class="logo">
+      <img src="images/utahlogo.jpg" alt="Utah County Logo">
+      <p>Utah County<br><span>Shaded Playgrounds</span></p>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="project.html">Home</a></li>
+        <li><a href="shade.html" class="active">Shade</a></li>
+        <li><a href="water.html">Water</a></li>
+      </ul>
+      <button id="darkModeToggle" aria-label="Toggle Dark Mode">🌙</button>
+    </nav>
+  </header>
+
+  <main>
+    <div class="hero">
+      <img src="images/patriot-park.jpg" width="600" height="400" alt="Hero" loading="lazy">
+
+    </div>
+  
+
+    <section class="featured-playground">
+      <h1>Featured Shaded Playgrounds</h1>
+      <p>These are the most popular playgrounds that offer natural or built-in shade—perfect for keeping kids cool and safe from the sun while they play. Whether it's large trees, shade sails, or covered structures, these parks provide a comfortable play experience even on hot days.</p>
+    </section>
+
+    <section class="playground-cards" id="playground-container"></section>
+
+    </div>
+    <section class="weather-box">
+    <h2>Current Weather in Utah County</h2>
+    <p id="temp"></p>
+    <p id="description"></p>
+    <img id="weather-icon" alt="Weather-icon">
+    </section>
+
+<!-- ___________Bottom_______________ -->
+    
+    <form id="contactForm">
+    <h1>Join our mailing list!</h1>
+    <p>Don't miss out on weekly emails with our featured playgrounds!</p>
+    <label for="displayName">Name:</label>
+    <input type="text" id="displayName" name="name" required>
+
+    <label for="displayEmail">Email:</label>
+    <input type="email" id="displayEmail" name="email" required>
+
+    <button type="submit">Submit</button>
+    </form>
+
+  </main>
+
+ <!-- <! -- Footer --> 
+  <footer>
+    <div class="contact-info">
+      <p><strong>Utah County Shaded Playgrounds</strong><br>
+        10 Center St<br>
+        info@provo.org<br>
+        (223) 555-2300
+      </p>
+    </div>
+    <div class="social-media">
+      <a href="#"><img src="images/youtube.webp" alt="YouTube" width="300" height="200"></a>
+      <a href="#"><img src="images/x.png" alt="Twitter" width="300" height="200"></a>
+      <a href="#"><img src="images/linkedin.jpg" alt="LinkedIn" width="300" height="200"></a>
+    </div>
+    <p>My final project video: <a href="https://www.youtube.com/watch?v=mpr_SJeeE4M" target="_blank">Click here</a></p>
+    <p>&copy; <span id="year"></span> Nely, USA.</p>
+    <p>WDD 231 Class Project</p>
+    <p id="lastModified"></p>
+  </footer>
+</body>
+</html>

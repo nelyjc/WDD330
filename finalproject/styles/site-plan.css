@@ -1,0 +1,44 @@
+/* Google Fonts */
+
+body {
+  font-family: 'Open Sans', sans-serif;
+  background-color: #fdfaf6; /* Light Sand */
+  color: #333;
+  margin: 2rem;
+  line-height: 1.6;
+}
+
+h1, h2 {
+  font-family: 'Raleway', sans-serif;
+  color: #2c5d63; /* Forest Green */
+}
+
+h1 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+h2 {
+  font-size: 1.5rem;
+  margin-top: 2rem;
+}
+
+.section {
+  margin-bottom: 2rem;
+}
+
+ul {
+  padding-left: 1.5rem;
+}
+
+strong {
+  color: #f4a261; /* Golden Yellow */
+}
+
+img {
+  border: 2px solid #2c5d63;
+  border-radius: 6px;
+  margin-top: 10px;
+  max-width: 100%;
+  height: auto;
+}
