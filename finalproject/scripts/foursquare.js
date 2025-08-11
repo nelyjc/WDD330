@@ -6,12 +6,22 @@ document.addEventListener("DOMContentLoaded", () => {
   const zipSearchBtn = document.getElementById("zipSearchBtn");
   const zipError = document.getElementById("zipError");
 
-  // Function to fetch playgrounds using Foursquare API category for playgrounds (16032)
-  function fetchPlaygrounds(lat, lon) {
-    console.log("Fetching playgrounds near:", lat, lon);
+  // Fetch playgrounds with either lat/lon or near (e.g. ZIP code)
+  function fetchPlaygrounds({ lat, lon, near }) {
+    let url = `https://api.foursquare.com/v3/places/search?categories=16032&limit=10&radius=5000`;
+
+    if (near) {
+      url += `&near=${encodeURIComponent(near)}`;
+    } else if (lat && lon) {
+      url += `&ll=${lat},${lon}`;
+    } else {
+      console.error("No location provided to fetchPlaygrounds");
+      return;
+    }
+
     resultsList.innerHTML = "<li>Loading playgrounds...</li>";
 
-    fetch(`https://api.foursquare.com/v3/places/search?categories=16032&ll=${lat},${lon}&radius=5000&limit=10`, {
+    fetch(url, {
       method: "GET",
       headers: {
         "Accept": "application/json",
@@ -23,13 +33,13 @@ document.addEventListener("DOMContentLoaded", () => {
       return response.json();
     })
     .then(data => {
-      console.log("Foursquare data received:", data);
+      console.log("Foursquare data:", data);
       resultsList.innerHTML = "";
 
       if (data.results && data.results.length > 0) {
         data.results.forEach(place => {
           const li = document.createElement("li");
-          li.textContent = `${place.name} - ${place.location.formatted_address}`;
+          li.textContent = `${place.name} - ${place.location.formatted_address || place.location.address || "Address not available"}`;
           resultsList.appendChild(li);
         });
       } else {
@@ -42,7 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Try getting user location via geolocation
+  // Geolocation: get user location and fetch playgrounds
   if (navigator.geolocation) {
     console.log("Requesting user location...");
     navigator.geolocation.getCurrentPosition(
@@ -50,7 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const lat = position.coords.latitude;
         const lon = position.coords.longitude;
         console.log("User location received:", lat, lon);
-        fetchPlaygrounds(lat, lon);
+        fetchPlaygrounds({ lat, lon });
       },
       error => {
         console.warn("Geolocation error or denied:", error);
@@ -59,10 +69,10 @@ document.addEventListener("DOMContentLoaded", () => {
     );
   } else {
     console.warn("Geolocation not supported.");
-    resultsList.innerHTML = "<li>Geolocation is not supported. Please enter a ZIP code.</li>";
+    resultsList.innerHTML = "<li>Geolocation not supported. Please enter a ZIP code.</li>";
   }
 
-  // ZIP code search functionality
+  // ZIP code search event
   if (zipSearchBtn && zipInput && zipError) {
     zipSearchBtn.addEventListener("click", () => {
       const zip = zipInput.value.trim();
@@ -73,25 +83,7 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      resultsList.innerHTML = "<li>Looking up ZIP code location...</li>";
-
-      fetch(`https://api.zippopotam.us/us/${zip}`)
-        .then(response => {
-          if (!response.ok) throw new Error("ZIP code not found");
-          return response.json();
-        })
-        .then(data => {
-          const place = data.places[0];
-          const lat = parseFloat(place.latitude);
-          const lon = parseFloat(place.longitude);
-          console.log(`ZIP code ${zip} coordinates:`, lat, lon);
-          fetchPlaygrounds(lat, lon);
-        })
-        .catch(err => {
-          console.error("Error fetching ZIP code location:", err);
-          zipError.textContent = "Invalid ZIP code or unable to fetch location.";
-          resultsList.innerHTML = "";
-        });
+      fetchPlaygrounds({ near: zip });
     });
   }
 });
