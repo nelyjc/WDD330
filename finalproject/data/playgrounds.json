@@ -7,7 +7,9 @@
       "features": "Slides, Swings, Picnic Tables",
       "website": "https://g.co/kgs/JhHPSRU",
       "city": "Provo",
-      "description": "A fun and shaded park near downtown."
+      "description": "A fun and shaded park near downtown.",
+      "rating": 4.6,
+      "reviewsCount": 128
     },
     {
       "name": "Spanish Fork Adventure Park",
@@ -16,7 +18,9 @@
       "features": "Zipline, Climbing Structures, Water Play",
       "website": "https://g.co/kgs/7t9u2BG",
       "city": "Spanish Fork",
-      "description": "Great for older kids and summer fun."
+      "description": "Great for older kids and summer fun.",
+      "rating": 4.8,
+      "reviewsCount": 75
     },
     {
       "name": "Spring Creek Park",
@@ -25,7 +29,9 @@
       "features": "Large Shade, Splash Pad, Walking Trails",
       "website": "https://g.co/kgs/3R7ACpP",
       "city": "Springville",
-      "description": "Beautiful shady park with space to play and cool off."
+      "description": "Beautiful shady park with space to play and cool off.",
+      "rating": 4.4,
+      "reviewsCount": 94
     },
     {
       "name": "Patriot Park",
@@ -34,34 +40,42 @@
       "features": "Covered Playground, Baseball Fields, Concessions",
       "website": "https://g.co/kgs/M8swB24",
       "city": "Provo",
-      "description": "Perfect for sports and shaded play during the summer."
+      "description": "Perfect for sports and shaded play during the summer.",
+      "rating": 4.7,
+      "reviewsCount": 110
     },
-     {
+    {
       "name": "Kiwanis Park",
       "address": "900 S 500 E, Provo, UT",
-      "image": "kiwanis-park.webp",
+      "image": "kiwanis.webp",
       "features": "Playground, Splash Pad, Picnic Areas, Walking Trails",
       "website": "https://g.co/kgs/GvUc5tw",
       "city": "Provo",
-      "description": "A large park with plenty of shaded play areas and a splash pad to keep kids cool."
+      "description": "A large park with plenty of shaded play areas and a splash pad to keep kids cool.",
+      "rating": 4.5,
+      "reviewsCount": 87
     },
     {
       "name": "Discovery Park",
       "address": "950 N 400 W, Orem, UT",
-      "image": "discovery-park.webp",
+      "image": "discoverypark.webp",
       "features": "Playground, Splash Pad, Sports Fields, Open Grass Areas",
       "website": "https://g.co/kgs/ee9riAt2",
       "city": "Orem",
-      "description": "Popular family park with splash pad and large playground equipment."
+      "description": "Popular family park with splash pad and large playground equipment.",
+      "rating": 4.3,
+      "reviewsCount": 150
     },
     {
       "name": "Murdock Canal Trail Park",
       "address": "4700 W Center St, Lehi, UT",
-      "image": "murdock-canal-trail-park.webp",
+      "image": "murdockcanal.webp",
       "features": "Playground, Splash Pad, Walking and Biking Trails",
       "website": "https://www.tripadvisor.com/Attraction_Review-g57093-d6997392-Reviews-Murdock_Canal_Trail-Orem_Utah.html",
       "city": "Lehi",
-      "description": "Ideal for kids to play and cool off at the splash pad after biking or walking the trail."
+      "description": "Ideal for kids to play and cool off at the splash pad after biking or walking the trail.",
+      "rating": 4.6,
+      "reviewsCount": 67
     }
   ]
 }

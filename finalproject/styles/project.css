@@ -80,6 +80,8 @@ header {
   margin-bottom: 10px;
   animation: fadeIn 0.6s ease-out; 
   transition: transform 0.3s ease; 
+  font-size: larger;
+  font-family: Arial, Helvetica, sans-serif;
 
 }
 
@@ -469,6 +471,21 @@ nav a:hover {
   transform: scale(1.02);
   box-shadow: 0 4px 10px rgba(0,0,0,0.2);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.playground-card a {
+  display: inline-block;
+  margin-top: 0.5rem;
+  color: #00191d;
+  text-decoration: none;
+  font-weight: bold;
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.playground-card a:hover,
+.playground-card a:focus {
+  transform: scale(1.1);
+  color: #27c2d6; 
+  outline: none;
 }
 
 /* Images fade in */

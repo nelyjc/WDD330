@@ -18,6 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
       container.innerHTML = '<p class="error-message">Playground info unavailable. Try again later.</p>';
     }
   }
+  
 
   function displayPlaygrounds(playgroundsArray) {
     if (!container) return;
@@ -33,7 +34,8 @@ document.addEventListener("DOMContentLoaded", () => {
         <p><strong>Address:</strong> ${playground.address}</p>
         <p><strong>City:</strong> ${playground.city}</p>
         <p><strong>Features:</strong> ${playground.features}</p>
-        <p>${playground.description}</p>
+        <p><strong>Description:</strong>${playground.description}</p>
+        <p><strong>Rating:</strong>★${playground.rating}</p>
         <a href="${playground.website}" target="_blank" rel="noopener noreferrer"> Click here for Directions</a>
       `;
 
