@@ -23,14 +23,14 @@
   <script src="scripts/darkmode.js" defer></script>
   <script src="scripts/grid-listview.js" defer></script>
 
-  <script
-  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDJhJFKczxddptOLu_XaXLZiu5HQ9lXIqE&libraries=places&callback=initMap"
-  async
-  defer>
+<script
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDJhJFKczxddptOLu_XaXLZiu5HQ9lXIqE">
+   async 
+   defer
 </script>
+
   <script src="scripts/googlePlaygrounds.js" defer></script>
-  
-</script>
+
 
   <script src="scripts/formsubmit.js"defer></script>
   <script src="scripts/displayinfo.js" defer></script>
@@ -81,18 +81,18 @@
     </div>
 <!--Google API------------------------>
   <section id="zipcode-search">
-  <h2>Find Playgrounds by ZIP Code</h2>
-  <input type="text" id="zipInput" placeholder="Enter ZIP code" maxlength="10" />
-  <button id="zipSearchBtn">Search</button>
-  <p id="zipError" style="color: red;"></p>
-</section>
-
-<section id="playgrounds-foursquare">
+    <h2>Find Playgrounds by ZIP Code</h2>
+    <input type="text" id="zipInput" placeholder="Enter ZIP code" maxlength="10" />
+    <button id="zipSearchBtn">Search</button>
+    <p id="zipError" style="color: red;"></p>
+  </section>
+  <section id="playground-places-card">
   <h2>Results Nearby</h2>
-  <ul id="results"></ul>
+  <div id="map" style="height: 400px; width: 100%; margin-bottom: 1rem;"></div>
+  <div id="results"></div>
 </section>
 
-
+ 
 
 
 <!-- ___________Bottom______________________ -->

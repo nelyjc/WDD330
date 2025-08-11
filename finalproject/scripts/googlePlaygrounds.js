@@ -3,20 +3,31 @@ document.addEventListener("DOMContentLoaded", () => {
   const zipInput = document.getElementById("zipInput");
   const zipSearchBtn = document.getElementById("zipSearchBtn");
   const zipError = document.getElementById("zipError");
+  const mapElement = document.getElementById("map");
 
-  // Setup dummy map (required for PlacesService)
-  const map = new google.maps.Map(document.createElement('div'));
-  const placesService = new google.maps.places.PlacesService(map);
+  let map;
+  let markers = [];
 
-  // Dynamic creation of playground cards
+  function initMap(location) {
+    map = new google.maps.Map(mapElement, {
+      center: location,
+      zoom: 13,
+    });
+  }
+
+  function clearMarkers() {
+    markers.forEach(marker => marker.setMap(null));
+    markers = [];
+  }
+
   function createPlaygroundCard(place) {
     const card = document.createElement("div");
-    card.classList.add("playground-card");
+    card.classList.add("playground-places-card");
     
     const rating = place.rating ? place.rating.toFixed(1) : "N/A";
     card.innerHTML = `
       <h3>${place.name}</h3>
-      <p>${place.formatted_address}</p>
+      <p>${place.vicinity || place.formatted_address}</p>
       <p>Rating: ${rating} ⭐</p>
       <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(place.name)}&query_place_id=${place.place_id}" target="_blank" rel="noopener">Get Directions</a>
     `;
@@ -24,9 +35,32 @@ document.addEventListener("DOMContentLoaded", () => {
     return card;
   }
 
-  // Search playgrounds with Google Places API
+  function addMarker(place) {
+    const marker = new google.maps.Marker({
+      position: place.geometry.location,
+      map: map,
+      title: place.name,
+    });
+
+    const infoWindow = new google.maps.InfoWindow({
+      content: `<strong>${place.name}</strong><br>Rating: ${place.rating ? place.rating.toFixed(1) : "N/A"} ⭐`,
+    });
+
+    marker.addListener("click", () => {
+      infoWindow.open(map, marker);
+    });
+
+    markers.push(marker);
+  }
+
   function searchPlaygrounds(location) {
+    if (!map) initMap(location);
+    else map.setCenter(location);
+
     resultsContainer.innerHTML = "Loading playgrounds...";
+    clearMarkers();
+
+    const placesService = new google.maps.places.Place(map);
 
     const request = {
       location: location,
@@ -35,15 +69,20 @@ document.addEventListener("DOMContentLoaded", () => {
       type: ["park"]
     };
 
-    placesService.nearbySearch(request, (results, status) => {
+    places.nearbySearch(request, (results, status) => {
       resultsContainer.innerHTML = "";
-      if (status === google.maps.places.PlacesServiceStatus.OK && results.length > 0) {
-        // Filter by rating >= 3.5 for robustness
+      if (status === google.maps.places.PlacesStatus.OK && results.length > 0) {
         const filtered = results.filter(p => p.rating && p.rating >= 3.5);
+
+        if (filtered.length === 0) {
+          resultsContainer.textContent = "No highly rated playgrounds found nearby.";
+          return;
+        }
 
         filtered.forEach(place => {
           const card = createPlaygroundCard(place);
           resultsContainer.appendChild(card);
+          addMarker(place);
         });
       } else {
         resultsContainer.textContent = "No playgrounds found.";
@@ -51,7 +90,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Geocode ZIP to lat/lng and search playgrounds
   function geocodeZip(zip) {
     const geocoder = new google.maps.Geocoder();
     geocoder.geocode({ address: zip }, (results, status) => {
@@ -65,7 +103,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Event listener for ZIP search
   zipSearchBtn.addEventListener("click", () => {
     const zip = zipInput.value.trim();
     if (/^\d{5}(-\d{4})?$/.test(zip)) {
@@ -75,7 +112,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Try geolocation on page load
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(
       position => {
