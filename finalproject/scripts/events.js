@@ -4,8 +4,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const eventError = document.getElementById("eventError");
     const eventsResults = document.getElementById("eventsResults");
 
-    // Use a constant for the token to avoid repeating the string.
-    const EVENTBRITE_TOKEN = "F7U4LNYTOQLMM3EFCZPR";
+ 
+    
 
     eventSearchBtn.addEventListener("click", () => {
         const zip = eventZipInput.value.trim();
@@ -29,12 +29,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 const lon = location.lng();
 
                 // Note: In a real app, this URL would be requested by your server-side proxy.
-                const url = `https://www.eventbriteapi.com/v3/events/search/?location.latitude=${lat}&location.longitude=${lon}&location.within=10mi&expand=venue`;
+                const url = `https://www.eventbriteapi.com/v3/events/search?location.latitude=${lat}&location.longitude=${lon}&location.within=10mi&expand=venue`;
+
 
                 fetch(url, {
                         headers: {
                             // Use the constant here
-                            Authorization: 'Bearer {F7U4LNYTOQLMM3EFCZPR}'
+                            Authorization: `Bearer F7U4LNYTOQLMM3EFCZPR`
                         }
                     })
                     .then(response => {

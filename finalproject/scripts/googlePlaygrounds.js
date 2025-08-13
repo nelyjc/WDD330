@@ -1,115 +1,133 @@
-// =================================================================
-// GLOBAL SCOPE
-// =================================================================
 
-// Global variables to be used by multiple functions
-let map;
-let placesService;
-let infoWindow;
-let playgroundMarkers = [];
-const EVENTBRITE_TOKEN = "F7U4LNYTOQLMM3EFCZPR"; // Your Eventbrite Token
+document.addEventListener("DOMContentLoaded", () => {
+    // --- Global variables ---
+    
+    let map;
+    let placesService;
+    let infoWindow;
+    let markers = []; // Array to store markers for easy clearing
 
-/**
- * This is the only global function. It is called by the Google Maps script
- * once the API has fully loaded. It's the starting point for our app.
- */
-function initMap() {
-    // This is the code that runs first, creating the map.
-    const defaultLoc = { lat: 39.8283, lng: -98.5795 };
-    const mapContainer = document.getElementById("map");
-
-    map = new google.maps.Map(mapContainer, {
-        center: defaultLoc,
-        zoom: 4,
-    });
-
-    // Initialize services that depend on the map
-    placesService = new google.maps.places.PlacesService(map);
-    infoWindow = new google.maps.InfoWindow();
-
-    // Now that the map is ready, set up the rest of the application's logic.
-    startApp();
-}
-
-/**
- * This function sets up all event listeners and application logic.
- * It is called by initMap() to ensure it only runs AFTER the map is ready.
- */
-function startApp() {
-    // =================================================================
-    // GET DOM ELEMENTS
-    // =================================================================
+    const resultsContainer = document.getElementById("results");
     const zipInput = document.getElementById("zipInput");
     const zipSearchBtn = document.getElementById("zipSearchBtn");
     const zipError = document.getElementById("zipError");
-    const resultsContainer = document.getElementById("resultsContainer");
+    const mapContainer = document.getElementById("map"); // Get the map div
 
-    const eventZipInput = document.getElementById("eventZipInput");
-    const eventSearchBtn = document.getElementById("eventSearchBtn");
-    const eventError = document.getElementById("eventError");
-    const eventsResults = document.getElementById("eventsResults");
+    // --- Initialize the Map ---
+    // This function is called once the Google Maps script loads
+    
+    window.initMap = function() {
+        // Default location (center of the US)
+        const defaultLoc = { lat: 39.8283, lng: -98.5795 };
 
-    // =================================================================
-    // SETUP EVENT LISTENERS
-    // =================================================================
-    zipSearchBtn.addEventListener("click", () => {
-        const zip = zipInput.value.trim();
-        if (/^\d{5}(-\d{4})?$/.test(zip)) {
-            zipError.textContent = "";
-            geocodeAndSearchPlaygrounds(zip);
-        } else {
-            zipError.textContent = "Please enter a valid US ZIP code.";
-        }
-    });
-
-    eventSearchBtn.addEventListener("click", () => {
-        const zip = eventZipInput.value.trim();
-        if (/^\d{5}(-\d{4})?$/.test(zip)) {
-            eventError.textContent = "";
-            fetchEvents(zip);
-        } else {
-            eventError.textContent = "Please enter a valid US ZIP code.";
-        }
-    });
-
-    // =================================================================
-    // PLAYGROUND FINDER FUNCTIONS
-    // =================================================================
-    function geocodeAndSearchPlaygrounds(zip) {
-        const geocoder = new google.maps.Geocoder();
-        geocoder.geocode({ address: zip }, (results, status) => {
-            if (status === "OK" && results[0] && results[0].geometry) {
-                searchPlaygrounds(results[0].geometry.location);
-            } else {
-                zipError.textContent = "Could not find location for that ZIP code.";
-            }
+        map = new google.maps.Map(mapContainer, {
+            center: defaultLoc,
+            zoom: 4, // Zoom out to see the whole country initially
         });
+        
+
+        placesService = new google.maps.places.placeService(map);
+        infoWindow = new google.maps.InfoWindow();
+
+        // On page load, try geolocation and show playgrounds nearby
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const userLoc = new google.maps.LatLng(
+                        position.coords.latitude,
+                        position.coords.longitude
+                    );
+                    searchPlaygrounds(userLoc);
+                },
+                () => {
+                    // Handle location access denial
+                    resultsContainer.textContent = "Location access denied. Please search by ZIP code.";
+                }
+            );
+        }
     }
 
+    // --- Helper Functions ---
+
+    // Create a playground card dynamically
+    function createPlaygroundCard(place) {
+        const card = document.createElement("div");
+        card.classList.add("playground-card");
+
+        const rating = place.rating ? place.rating.toFixed(1) : "N/A";
+        const address = place.vicinity || place.formatted_address || "Address not available";
+
+        // Note: Corrected the Google Maps URL
+        card.innerHTML = `
+      <h3>${place.name}</h3>
+      <p>${address}</p>
+      <p>Rating: ${rating} ⭐</p>
+      <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(place.name)}&query_place_id=${place.place_id}" target="_blank" rel="noopener">Get Directions</a>
+    `;
+
+        return card;
+    }
+
+    // Create a map marker for a place
+    function createMarker(place) {
+        const marker = new google.maps.Marker({
+            map: map,
+            position: place.geometry.location,
+            title: place.name,
+        });
+
+        markers.push(marker); // Add to our markers array
+
+        // Add a click listener to each marker to show an info window
+        google.maps.event.addListener(marker, "click", () => {
+            infoWindow.setContent(`<strong>${place.name}</strong><br>${place.vicinity}`);
+            infoWindow.open(map, marker);
+        });
+    }
+    
+    // Clear markers from the map before a new search
+    function clearMarkers() {
+        for (let i = 0; i < markers.length; i++) {
+            markers[i].setMap(null); // Remove marker from map
+        }
+        markers = []; // Empty the array
+    }
+
+
+    // --- Core Search and Geocoding Functions ---
+
+    // Search playgrounds using Google Places API near a location
     function searchPlaygrounds(location) {
         resultsContainer.innerHTML = "Loading playgrounds...";
-        clearPlaygroundMarkers();
+        clearMarkers(); // Clear old markers from the map
+
+        // Center the map on the new search location and zoom in
         map.setCenter(location);
         map.setZoom(12);
 
         const request = {
             location: location,
-            radius: 5000,
+            radius: 5000, // 5 km radius
             keyword: "playground",
             type: ["park"],
         };
 
         placesService.nearbySearch(request, (results, status) => {
-            resultsContainer.innerHTML = "";
-            if (status === google.maps.places.PlacesServiceStatus.OK && results) {
-                const filtered = results.filter(p => p.rating && p.rating >= 3.5);
+            resultsContainer.innerHTML = ""; // Clear the loading message
+
+            if (status === google.maps.places.PlaceStatus.OK && results) {
+                // Filter for better results
+                const filtered = results.filter(place => place.rating && place.rating >= 3.5);
+
                 if (filtered.length === 0) {
-                    resultsContainer.textContent = "No highly rated playgrounds found.";
+                    resultsContainer.textContent = "No highly rated playgrounds found nearby.";
                     return;
                 }
+
+                // Create cards and markers for each result
                 filtered.forEach(place => {
                     resultsContainer.appendChild(createPlaygroundCard(place));
-                    createPlaygroundMarker(place);
+                    createMarker(place);
                 });
             } else {
                 resultsContainer.textContent = "No playgrounds found.";
@@ -117,86 +135,34 @@ function startApp() {
         });
     }
 
-    function createPlaygroundCard(place) {
-        const card = document.createElement("div");
-        card.classList.add("playground-card");
-        const rating = place.rating ? place.rating.toFixed(1) : "N/A";
-        const address = place.vicinity || "Address not available";
-        card.innerHTML = `<h3>${place.name}</h3><p>${address}</p><p>Rating: ${rating} ⭐</p>`;
-        return card;
-    }
-
-    function createPlaygroundMarker(place) {
-        const marker = new google.maps.Marker({
-            map: map,
-            position: place.geometry.location,
-            title: place.name,
-        });
-        playgroundMarkers.push(marker);
-        marker.addListener("click", () => {
-            infoWindow.setContent(`<strong>${place.name}</strong><br>${place.vicinity || ''}`);
-            infoWindow.open(map, marker);
-        });
-    }
-
-    function clearPlaygroundMarkers() {
-        playgroundMarkers.forEach(marker => marker.setMap(null));
-        playgroundMarkers = [];
-    }
-
-    // =================================================================
-    // EVENT FINDER FUNCTIONS
-    // =================================================================
-    function fetchEvents(zip) {
-        eventsResults.innerHTML = "Loading events...";
+    // Convert ZIP code to lat/lng using Geocoder, then search
+    function geocodeZip(zip) {
         const geocoder = new google.maps.Geocoder();
-        geocoder.geocode({ address: zip }, (results, status) => {
-            if (status === "OK" && results[0] && results[0].geometry) {
-                const location = results[0].geometry.location;
-                const url = `https://www.eventbriteapi.com/v3/events/search/?location.latitude=${location.lat()}&location.longitude=${location.lng()}&location.within=10mi&expand=venue`;
-
-                fetch(url, { headers: { Authorization: `Bearer ${EVENTBRITE_TOKEN}` } })
-                    .then(response => {
-                        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-                        return response.json();
-                    })
-                    .then(data => displayEvents(data.events))
-                    .catch(error => {
-                        eventError.textContent = "Error fetching events. This may be due to browser security (CORS).";
-                        eventsResults.innerHTML = "";
-                        console.error("Fetch Error:", error);
-                    });
+        geocoder.geocode({ address: zip, componentRestrictions: { country: 'US' } }, (results, status) => {
+            if (status === "OK" && results[0]) {
+                searchPlaygrounds(results[0].geometry.location);
+                zipError.textContent = "";
             } else {
-                eventError.textContent = "Invalid ZIP code or location could not be found.";
-                eventsResults.innerHTML = "";
+                zipError.textContent = "Invalid ZIP code.";
+                resultsContainer.innerHTML = "";
             }
         });
     }
 
-    function displayEvents(events) {
-        if (!events || events.length === 0) {
-            eventsResults.innerHTML = "<p>No events found nearby.</p>";
-            return;
+    // --- Event Listeners ---
+    zipSearchBtn.addEventListener("click", () => {
+        const zip = zipInput.value.trim();
+        if (/^\d{5}(-\d{4})?$/.test(zip)) {
+            geocodeZip(zip);
+        } else {
+            zipError.textContent = "Please enter a valid US ZIP code.";
+            resultsContainer.innerHTML = "";
         }
-        eventsResults.innerHTML = "";
-        events.forEach(event => {
-            const eventDiv = document.createElement("div");
-            eventDiv.classList.add("event-card");
-            const startDate = new Date(event.start.local).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' });
-            const imageUrl = event.logo?.url || '';
-            const venueName = event.venue?.name || 'Venue not specified';
-            const description = event.description?.text ? (event.description.text.substring(0, 150) + "...") : "No description available.";
-            
-            eventDiv.innerHTML = `
-                ${imageUrl ? `<img src="${imageUrl}" alt="${event.name.text}" class="event-image">` : ''}
-                <div class="event-details">
-                    <h3><a href="${event.url}" target="_blank" rel="noopener">${event.name.text}</a></h3>
-                    <p><strong>When:</strong> ${startDate}</p>
-                    <p><strong>Where:</strong> ${venueName}</p>
-                    <p>${description}</p>
-                </div>
-            `;
-            eventsResults.appendChild(eventDiv);
-        });
-    }
-}
+    });
+    zipInput.addEventListener("keypress", (e) => {
+        if (e.key === "Enter") {
+            zipSearchBtn.click(); // Trigger search on Enter key
+        }
+    });
+    initMap();
+});
