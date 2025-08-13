@@ -297,6 +297,10 @@ p {
   cursor: pointer;
 
 }
+#map {
+  height: 500px;
+  width: 100%;
+}
 /* === Results Section === */
 #results {
   list-style: none;
@@ -314,6 +318,7 @@ p {
   max-width: 400px;
   padding: 1rem 1.5rem;
   background-color: #f9f9f9;
+  transition:  0.3s ease;
   border-radius: 10px;
   box-shadow: 0 3px 8px rgba(0,0,0,0.1);
   text-align: center;
@@ -340,6 +345,7 @@ p {
 #zipcode-search input[type="text"]:focus {
   border-color: #3498db;
   outline: none;
+  
 }
 
 #zipcode-search button {
@@ -350,7 +356,8 @@ p {
   border: none;
   border-radius: 6px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.8s ease;
+  transform: scale(1);
 }
 
 #zipcode-search button:hover,
@@ -365,8 +372,30 @@ p {
   color: #e74c3c;
   min-height: 1.2em; /* keeps space reserved even when empty */
 }
+/* === Events Card === */
 
 
+
+.event-card {
+     margin: 2rem auto;
+  max-width: 400px;
+  padding: 1rem 1.5rem;
+  background-color: #f9f9f9;
+  transition:  0.3s ease;
+  border-radius: 10px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+  text-align: center;
+  font-family: 'Open Sans', sans-serif;
+}
+
+.event-card h3 a {
+    color: #2a5db0;
+    text-decoration: none;
+}
+
+.event-card h3 a:hover {
+    text-decoration: underline;
+}
 
 /* === Footer === */
 footer {
