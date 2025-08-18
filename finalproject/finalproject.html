@@ -15,7 +15,11 @@
   <link rel="stylesheet" href="styles/project.css">
   <link rel="stylesheet" href="styles/project-larger.css">
   <link rel="icon" href="logoplayground.ico">
-
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDJhJFKczxddptOLu_XaXLZiu5HQ9lXIqE&libraries=places&callback=initMap" 
+  async
+  defer
+  ></script>
+  
   
   <script src="scripts/weather.js" defer></script>
 
@@ -35,7 +39,8 @@
 
   <script src="scripts/displayinfo.js" defer></script>
 
-  <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDJhJFKczxddptOLu_XaXLZiu5HQ9lXIqE&libraries=places&callback=initMap"></script>
+
+
 </head>
 
 <body>
@@ -70,7 +75,7 @@
       <button id="gridView" class="active">Grid View</button>
       <button id="listView">List View</button>
     </div>
-    
+    <!--pLAYGROUND-->
     <section class="featured-playground">
       <h1>Featured Playgrounds</h1>
       <p>These are the best playgrounds that we are featuring this week.</p>
@@ -86,9 +91,11 @@
     <button id="zipSearchBtn">Search</button>
     <p id="zipError" style="color: red;"></p>
   </section>
-  <section id="playground-card">
+  <section id="playgroundResults">
+    <h2>Playgrounds Results</h2>
+    <div id="resultsContainer"></div>
   <h2>Results Nearby</h2>
-  <div id="results"></div>
+
   <div id="map" style="height: 400px; width: 100%; margin-bottom: 1rem;"></div>
   </section>
 
@@ -135,7 +142,7 @@
       <a href="#"><img src="images/x.png" alt="Twitter" width="300" height="200"></a>
       <a href="#"><img src="images/linkedin.jpg" alt="LinkedIn" width="300" height="200"></a>
     </div>
-    <p>My final project video: <a href="https://www.youtube.com" target="_blank">Click here</a></p>
+    <p>My final project video: <a href="https://youtu.be/aPoPj4BVTK8?si=7_aYtI15180XQnp9" target="_blank">Click here</a></p>
     <p>&copy; <span id="year"></span> Nely, USA.</p>
     <p>WDD 330 Class Project</p>
     <p id="lastModified"></p>

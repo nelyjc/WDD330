@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
         
 
-        placesService = new google.maps.places.placeService(map);
+        placesService = new google.maps.places.placesService(map);
         infoWindow = new google.maps.InfoWindow();
 
         // On page load, try geolocation and show playgrounds nearby
@@ -40,8 +40,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     searchPlaygrounds(userLoc);
                 },
                 () => {
-                    // Handle location access denial
-                    resultsContainer.textContent = "Location access denied. Please search by ZIP code.";
+                     document.getElementById("results").textContent =
+                    "Location access denied. Please search by ZIP code.";
                 }
             );
         }
