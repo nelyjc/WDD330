@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const eventError = document.getElementById("eventError");
     const eventsResults = document.getElementById("eventsResults");
 
-    const EVENTBRITE_TOKEN = "F7U4LNYTOQLMM3EFCZPR"; 
+    const EVENTBRITE_TOKEN = ""; 
     
 
     eventSearchBtn.addEventListener("click", () => {
@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 fetch(url, {
                         headers: {
                             // Use the constant here
-                            Authorization: 'Bearer GCCLX72HEWBZPEJHCD'
+                            Authorization: 'Bearer '
                         }
                     })
                     .then(response => {
